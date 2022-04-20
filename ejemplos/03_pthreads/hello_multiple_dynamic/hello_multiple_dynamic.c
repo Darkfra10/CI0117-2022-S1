@@ -25,7 +25,7 @@ int main(int argc, char** arg) {
 }
 
 int create_threads(size_t thread_count) {
-    pthread_t* threads = calloc(thread_count, sizeof(pthread_t));
+    pthread_t* threads = (pthread_t*)calloc(thread_count, sizeof(pthread_t));
 
     if (threads) {
         for (size_t i = 0; i < thread_count; ++i) {
