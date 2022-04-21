@@ -80,7 +80,7 @@ Por cada nivel de profundidad, se espera que el programa genere un archivo "tetr
 - En la tercera línea el número que representa la rotación aplicada (0, 1, 2, ó 3)
 - En la cuarta línea, el número de filas N del área de juego
 - En la quinta línea, el número de columnas M del área de juego
-- Y en las siguientes N líneas, cada una de las filas del área de juego que representan el estado original 
+- Y en las siguientes N líneas, hileras de M caracteres representando cada una de las filas del área de juego del estado original más las figuras del nivel actual y los anteriores colocadas en la mejor posición encontrada.
 
 Ejemplo de salida esperada (tetris_play_0.txt):
 
@@ -141,8 +141,9 @@ Z
 1220066022
 1777742244
 ```
+Observe cómo en el archivo "tetris_play_0.txt", la matriz del área del juego tiene ahora la figura **I** en la columna 0 y en rotación 1 (vertical). Mientras que en el archivo "tetris_play_1.txt" la matriz agrega, además de la figura I, la figura **Z** en la columna 7 y en rotación 0. 
 
-Si dado el estado, una figura no se puede colocar del todo en algún nivel, su programa **no** debe generar ningún archivo para esa figura e imprime un mensaje indicando que no se logró encontrar espacio.
+Si para un estado dado, el programa no puede encontrar del todo una posición valida para colocar la figura correspondiente al nivel, entonces **no** se debe generar ningún archivo de salida para dicho nivel ni para los siguientes. Los archivos de salida deben contener únicamente estados válidos.
 
 ## Entregables
 En su repositorio personal cree una carpeta *tareas/tetris_solver_serial/* para esta tarea. Debe mantenerse la estructura de archivos y directorios característica de un proyecto de Unix:
@@ -207,7 +208,7 @@ Para esta tarea **no** es necesario optimizar la solución. Por el contrario, el
 ### Pruebas
 Asegúrese de verificar el funcionamiento de su programa con el caso de prueba del enunciado y cree otros casos de prueba propios, utilizando diferentes tamaños y niveles de profundidad.
 
-Su programa debe hacer buen uso de los recursos. Por ejemplo, no debe generar fugas de memoria, ni accesos inválidos, ni usar memoria no inicializada. Estas pruebas puede realizarlas herramientas de análisis dinámico de código como Valgrind y Google Sanitizers.
+Su programa debe hacer buen uso de los recursos. Por ejemplo, no debe generar fugas de memoria, ni accesos inválidos, ni usar memoria no inicializada. Estas pruebas puede realizarlas con herramientas de análisis dinámico de código como Valgrind y Google Sanitizers.
 
 ## Evaluación
 [10%] Buen uso de los commits, estructura de archivos y directorios, ignorar archivos generados.
