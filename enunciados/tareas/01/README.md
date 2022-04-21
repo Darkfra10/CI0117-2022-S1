@@ -65,7 +65,7 @@ Con respecto a la **profundidad**, ésta determina la cantidad de piezas a consi
 
 El cálculo de la jugada se realiza mediante *fuerza bruta* como ya se mencionó y se recomienda seguir un algoritmo de [búsqueda en profundidad](https://es.wikipedia.org/wiki/B%C3%BAsqueda_en_profundidad) (aunque se puede seguir cualquier otro método de fuerza bruta). Dependiendo del nivel, para cada rotación y posición de una figura, se calcularán también todas las combinaciones posibles de la siguiente. Por ejemplo, para la entrada mostrada anteriormente, dado que el nivel es 1 se consideran las primeras 2 figuras de la siguiente manera:
 
-![play](http://jocan3.com/misc_images/tetris_solver_tree.png)
+![play](http://jocan3.com/misc_images/tetris_solve_tree.png)
 \
 \
 **No** es necesario calcular ni *limpiar* las líneas que se completan. El objetivo de esta tarea es principalmente colocar las figuras. 
