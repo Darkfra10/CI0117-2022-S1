@@ -87,6 +87,10 @@ int create_threads(size_t thread_count) {
     return EXIT_SUCCESS;
 }
 
+// 1. multiple threads
+// 2. shared memory
+// 3. WR - WW
+
 void* run(void* params) {
     private_data_t* data = (private_data_t*)params;
 
@@ -95,10 +99,10 @@ void* run(void* params) {
 
     if (data->thread_num % 2 == 0) {
         sscanf("hello", "%s", data->message);
-        sscanf("hello", "%s", data->shared_data->message);
+       // sscanf("hello", "%s", data->shared_data->message);
     } else {
         sscanf("world", "%s", data->message);
-        sscanf("world", "%s", data->shared_data->message);
+       // sscanf("world", "%s", data->shared_data->message);
     }
     printf("%zu: %s!\n", data->thread_num, data->message);
 

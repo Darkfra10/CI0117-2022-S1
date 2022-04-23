@@ -10,7 +10,9 @@ int create_threads(size_t thread_count);
 void* run(void*);
 
 typedef struct shared_data {
+    size_t position;
     size_t thread_count;
+    pthread_mutex_t can_access_position;
 } shared_data_t;
 
 typedef struct private_data {
@@ -43,8 +45,10 @@ int create_threads(size_t thread_count) {
         shared_data_t* shared_data = (shared_data_t*)calloc(1, sizeof(shared_data_t));
 
         if (private_data && shared_data) {
-
             shared_data->thread_count = thread_count;
+            shared_data->position = 0;
+            pthread_mutex_init(&shared_data->can_access_position, NULL);
+
             for (size_t i = 0; i < thread_count; ++i) {
                 private_data[i].thread_num = i;
                 private_data[i].shared_data = shared_data;
@@ -61,15 +65,14 @@ int create_threads(size_t thread_count) {
             }
 
             free(private_data);
+            pthread_mutex_destroy(&shared_data->can_access_position);
             free(shared_data);
 
         } else {
             fprintf(stderr, "Unable to allocate memory for %zu threads\n",
                 thread_count);
             return EXIT_FAILURE;
-        }
-
-        free(threads);
+        }        free(threads);
 
     } else {
         fprintf(stderr, "Unable to allocate memory for %zu threads\n",
@@ -82,8 +85,16 @@ int create_threads(size_t thread_count) {
 
 void* run(void* params) {
     private_data_t* data = (private_data_t*)params;
-    printf("Hello from the secondary thread %zu of %zu!\n", data->thread_num,
-            data->shared_data->thread_count);
+    shared_data_t* shared_data = data->shared_data;
+
+    pthread_mutex_lock(&shared_data->can_access_position);
+    
+    data->shared_data->position++;
+    
+    printf("Thread %zu/%zu: Position %zu\n", data->thread_num,
+            data->shared_data->thread_count, data->shared_data->position);
+
+    pthread_mutex_unlock(&shared_data->can_access_position);
+ 
     return NULL;
 }
-
