@@ -50,7 +50,7 @@ Ejemplo de entrada:
 0002200000
 0020220000
 0220066000
-0777742244
+0777742240
 7
 I
 Z
@@ -68,9 +68,9 @@ El cálculo de la jugada se realiza mediante *fuerza bruta* como ya se mencionó
 ![play](http://jocan3.com/misc_images/tetris_solve_tree.png)
 \
 \
-**No** es necesario calcular ni *limpiar* las líneas que se completan. El objetivo de esta tarea es principalmente colocar las figuras. 
+**Observaciones:** No debe implementar jugadas "inteligentes" donde una figura se gira a último momento para que quepa en un determinado espacio, sino que se asume que la figura se rota desde el inicio. Tampoco  es necesario calcular ni *limpiar* las líneas que se completan. El objetivo de esta tarea es principalmente colocar las figuras.
 
-Cada vez que se coloque una pieza, se debe calcular un puntaje que nos diga "qué tan bueno" es el estado del juego en ese momento. Dada la complejidad del juego, no existe una fórmula perfecta, sin embargo en la Web se pueden encontrar diferentes soluciones y literatura al respecto (Por ejemplo: [Tetris: A Heuristic Study](http://kth.diva-portal.org/smash/get/diva2:815662/FULLTEXT01.pdf) o [Heuristic AI for playing tetris](https://github.com/takado8/Tetris)). El estudiante es libre de implementar la fórmula o estrategia que considere mejor para dicho cálculo.
+Cada vez que se coloque una pieza, se debe calcular un puntaje que nos diga "qué tan bueno" es el estado del juego en ese momento. Dada la complejidad del juego, no existe una fórmula perfecta, sin embargo en la Web se pueden encontrar diferentes soluciones y literatura al respecto (Por ejemplo: [Tetris: A Heuristic Study](http://kth.diva-portal.org/smash/get/diva2:815662/FULLTEXT01.pdf) o [Heuristic AI for playing tetris](https://github.com/takado8/Tetris)). El estudiante es libre de implementar la fórmula o estrategia que considere mejor para dicho cálculo. El puntaje se debe calcular siempre en los niveles más bajos (hojas del árbol).
 
 Una vez que su solución haya recorrido todas las combinaciones posibles y calculado un puntaje para cada una, se debe guardar la mejor posición y rotación para cada figura.
 
@@ -86,7 +86,6 @@ Ejemplo de salida esperada (tetris_play_0.txt):
 
 ```
 1650259796944
-1
 I
 1
 20
@@ -110,12 +109,11 @@ I
 1002200000
 1020220000
 1220066000
-1777742244
+1777742240
 ```
 Ejemplo de salida esperada (tetris_play_1.txt):
 ```
 1650259796944
-1
 Z
 0
 20
@@ -139,7 +137,7 @@ Z
 1002200000
 1020220220
 1220066022
-1777742244
+1777742240
 ```
 Observe cómo en el archivo "tetris_play_0.txt", la matriz del área del juego tiene ahora la figura **I** en la columna 0 y en rotación 1 (vertical). Mientras que en el archivo "tetris_play_1.txt" la matriz agrega, además de la figura I, la figura **Z** en la columna 7 y en rotación 0. 
 
