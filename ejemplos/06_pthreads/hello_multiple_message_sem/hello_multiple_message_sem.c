@@ -1,8 +1,4 @@
-// Copyright 2022 Jose Andres Mena <jose.menaarias@ucr.ac.cr> 
-// This example shows an incorrect use of pthread mutex. The main thread is
-// locking a mutex gaining its ownership but never unlocks it, passing the
-// responsibility to a secondary thread. Unlocking a mutex without its ownership
-// produces undefined/unknown behavior
+// Copyright 2022 Jose Andres Mena <jose.menaarias@ucr.ac.cr>
 
 #include <errno.h>
 #include <stdio.h>
@@ -10,6 +6,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <string.h>
+#include <semaphore.h>
 
 int create_threads(size_t thread_count);
 void* run(void*);
@@ -17,8 +14,8 @@ void* run(void*);
 typedef struct shared_data {
     size_t thread_count;
     size_t next;
-    pthread_mutex_t can_print_hello;
-    pthread_mutex_t can_print_world;
+    sem_t can_print_hello;
+    sem_t can_print_world;
     char message[6];
 } shared_data_t;
 
@@ -56,10 +53,8 @@ int create_threads(size_t thread_count) {
         shared_data->next = 0;
 
         if (private_data && shared_data) {
-            pthread_mutex_init(&shared_data->can_print_hello, NULL);
-            pthread_mutex_init(&shared_data->can_print_world, NULL);
-
-            pthread_mutex_lock(&shared_data->can_print_world);
+            sem_init(&shared_data->can_print_hello, /*pshared*/ 0, 1);
+            sem_init(&shared_data->can_print_world, /*pshared*/ 0, 0);
 
             for (size_t i = 0; i < thread_count; ++i) {
                 private_data[i].thread_num = i;
@@ -77,8 +72,8 @@ int create_threads(size_t thread_count) {
 
             free(private_data);
 
-            pthread_mutex_destroy(&shared_data->can_print_hello);
-            pthread_mutex_destroy(&shared_data->can_print_world);
+            sem_destroy(&shared_data->can_print_hello);
+            sem_destroy(&shared_data->can_print_world);
             free(shared_data);
 
         } else {
@@ -108,15 +103,15 @@ void* run(void* params) {
 
     // mutex lock
     if (data->thread_num % 2 == 0) {
-        pthread_mutex_lock(&shared_data->can_print_hello);
+        sem_wait(&shared_data->can_print_hello);
         sscanf("hello", "%s", data->message);
         printf("%zu: %s!\n", data->thread_num, data->message);
-        pthread_mutex_unlock(&shared_data->can_print_world);
+        sem_post(&shared_data->can_print_world);
     } else {
-        pthread_mutex_lock(&shared_data->can_print_world);
+        sem_wait(&shared_data->can_print_world);
         sscanf("world", "%s", data->message);
         printf("%zu: %s!\n", data->thread_num, data->message);
-        pthread_mutex_unlock(&shared_data->can_print_hello);
+        sem_post(&shared_data->can_print_hello);
     }
 
     return NULL;
