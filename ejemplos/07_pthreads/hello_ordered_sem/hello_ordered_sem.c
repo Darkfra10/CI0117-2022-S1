@@ -7,16 +7,12 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-#define GREET_SIZE 100
-
 int create_threads(size_t thread_count);
 void *run(void *);
-void** create_matrix(size_t row_count, size_t col_count, size_t element_size);
-void free_matrix(const size_t row_count, void** matrix);
 
 typedef struct shared_data {
     size_t thread_count;
-    char** greets;
+    sem_t *can_greet;
 } shared_data_t;
 
 typedef struct private_data {
@@ -64,11 +60,10 @@ int create_threads(size_t thread_count) {
             return EXIT_FAILURE;
         }
         shared_data->thread_count = thread_count;
-        shared_data->greets = (char**)create_matrix(thread_count,
-            GREET_SIZE, sizeof(char));
+        shared_data->can_greet = (sem_t *)calloc(thread_count, sizeof(sem_t));
 
-        if (!shared_data->greets) {
-            fprintf(stderr, "Could not create matrix\n");
+        if (!shared_data->can_greet) {
+            fprintf(stderr, "Could not allocate memmory for semaphores\n");
             free(threads);
             free(private_data);
             free(shared_data);
@@ -78,6 +73,7 @@ int create_threads(size_t thread_count) {
 
         for (size_t i = 0; i < thread_count; ++i) {
             private_data[i].thread_num = i;
+            sem_init(&shared_data->can_greet[i], 0, !i);
             private_data[i].shared_data = shared_data;
             if (pthread_create(&threads[i], NULL, run,
                                (void *)&private_data[i]) != EXIT_SUCCESS) {
@@ -87,14 +83,12 @@ int create_threads(size_t thread_count) {
         for (size_t i = 0; i < thread_count; ++i) {
             pthread_join(threads[i], NULL);
         }
-
-        for (size_t i = 0; i < thread_count; ++i) {
-            fprintf("%s\n", shared_data->greets[i]);
-        }
-        
         printf("Hello from the main thread\n");
 
-        free_matrix(thread_count, shared_data->greets);
+        for (size_t i = 0; i < thread_count; ++i) {
+            sem_destroy(&shared_data->can_greet[i]);
+        }
+        free(shared_data->can_greet);
         free(shared_data);
         free(private_data);
         free(threads);
@@ -111,34 +105,14 @@ void *run(void *params) {
     private_data_t *data = (private_data_t *)params;
     shared_data_t *shared_data = (shared_data_t *)data->shared_data;
     size_t thread_num = data->thread_num;
-    sprintf(shared_data->greets[thread_num], "Thread %zu/%zu: Hello!",
-        thread_num, shared_data->thread_count);
+
+    sem_wait(&shared_data->can_greet[thread_num]);
+
+    printf("Thread %zu/%zu: Hello!\n", data->thread_num,
+           data->shared_data->thread_count);
+
+    size_t next_index = (thread_num + 1) % shared_data->thread_count;
+    sem_post(&shared_data->can_greet[next_index]);
 
     return NULL;
-}
-
-void** create_matrix(size_t row_count, size_t col_count, size_t element_size) {
-  void** matrix = (void**) calloc(row_count, sizeof(void*));
-  if ( matrix == NULL ) {
-    return NULL;
-  }
-
-  for (size_t row = 0; row < row_count; ++row) {
-    if ( (matrix[row] = calloc(col_count, element_size) ) == NULL ) {
-      free_matrix(row_count, matrix);
-      return NULL;
-    }
-  }
-
-  return matrix;
-}
-
-void free_matrix(const size_t row_count, void** matrix) {
-  if (matrix) {
-    for (size_t row = 0; row < row_count; ++row) {
-      free(matrix[row]);
-    }
-  }
-
-  free(matrix);
 }
