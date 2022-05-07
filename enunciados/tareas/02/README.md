@@ -9,7 +9,7 @@ Esta tarea es una secuencia de la tarea01 y debe apegarse a las reglas de entreg
 * Análisis
 * Documentación
 
-Para esta tarea paralilice su programa en C usando Pthreads para que la búsqueda del mejor puntaje dado un estado de Tetris se haga de forma concurrente.
+Para esta tarea paralelice su programa en C usando Pthreads para que la búsqueda del mejor puntaje dado un estado de Tetris se haga de forma concurrente.
 
 ## Correcciones a la tarea01
 
