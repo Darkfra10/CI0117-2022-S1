@@ -1,6 +1,6 @@
 # Tarea02: [tetris_solver_pthreads]
 
-Tarea estrictamente individual. Fecha límite de entrega: domingo 22 de mayo a las 23:59. Se entrega en su repositorio personal.
+Tarea estrictamente individual. Fecha límite de entrega: sábado 28 de mayo a las 23:59. Se entrega en su repositorio personal.
 
 Esta tarea es una secuencia de la tarea01 y debe apegarse a las reglas de entrega de la tarea01, a excepción de los cambios solicitados en este enunciado. En particular, se mantienen las siguientes secciones de la tarea01:
 
