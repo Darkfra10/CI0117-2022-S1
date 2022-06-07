@@ -1,13 +1,11 @@
 // Copyright 2021 Jeisson Hidalgo-Cespedes <jeisson.hidalgo@ucr.ac.cr> CC-BY-4
 // Simulates a producer and a consumer that share a unbounded buffer
 
+#include <stdbool.h>
 #include <stdio.h>
 
 #include "common.h"
 #include "consumer.h"
-
-#include <stdbool.h>
-#include <stdio.h>
 
 void* consume(void* data) {
   simulation_t* simulation = (simulation_t*)data;

@@ -1,6 +1,9 @@
 // Copyright 2021 Jeisson Hidalgo-Cespedes <jeisson.hidalgo@ucr.ac.cr> CC-BY-4
 // Simulates a producer and a consumer that share a bounded buffer
 
+// @see `man feature_test_macros`
+#define _DEFAULT_SOURCE
+
 #include <assert.h>
 #include <errno.h>
 #include <pthread.h>
@@ -101,8 +104,8 @@ int analyze_arguments(simulation_t* simulation, int argc, char* argv[]) {
         error = 8;
     }
   } else {
-    fprintf(stderr, "usage: producer_consumer buffer_capacity rounds"
-      " producer_min_delay producer_max_delay"
+    fprintf(stderr, "usage: producer_consumer unit_count producer_count"
+      " consumer_count producer_min_delay producer_max_delay"
       " consumer_min_delay consumer_max_delay\n");
       error = 1;
   }

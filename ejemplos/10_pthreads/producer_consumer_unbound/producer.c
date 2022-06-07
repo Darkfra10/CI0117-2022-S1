@@ -6,9 +6,6 @@
 #include "common.h"
 #include "producer.h"
 
-#include <stdio.h>
-
-
 void* produce(void* data) {
   // const private_data_t* private_data = (private_data_t*)data;
   simulation_t* simulation = (simulation_t*)data;
