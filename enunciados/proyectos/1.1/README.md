@@ -1,6 +1,6 @@
 # Proyecto01: [tetris_player]. Entrega #1
 
-El Proyecto01 será sobre concurrencia de tareas y paralelismo de datos, sin embargo, esta primera entrega consistirá en una versión **serial** que será optimizada mediante concurrencia en la siguiente entrega. Se realizará en grupos de máximo tres personas y se utilizará el lenguage de programación C++. Entregar a más tardar el 11 de Junio a las 23:59. Las entregas tardías se tratarán como se estipula en la carta al estudiante.
+El Proyecto01 será sobre concurrencia de tareas y paralelismo de datos, sin embargo, esta primera entrega consistirá en una versión **serial** que será optimizada mediante concurrencia en la siguiente entrega. Se realizará en grupos de máximo tres personas y se utilizará el lenguage de programación C++. Entregar a más tardar el 12 de Junio a las 23:59. Las entregas tardías se tratarán como se estipula en la carta al estudiante.
 
 ## Repositorio y archivos
 Deben entregar su solución en el repositorio privado de Github que para ese efecto ya creó cada grupo, dentro de una carpeta exclusiva para este proyecto, dado que el repositorio albergará los dos proyectos del curso. Deben asegurarse de que el docente tenga acceso a dicho repositorio. Todos los miembros del grupo deben demostrar un nivel similar de participación en el desarrollo de la solución. Cada participante debe asegurarse de hacer commits frecuentes, que impliquen un aporte, con mensajes breves pero descriptivos. Debe haber una adecuada distribución de la carga de trabajo, y no desequilibrios como que "un miembro del equipo sólo documentó el código". Pueden hacer uso de *branches* y cualquier otra práctica de control de versiones que permita Github.
@@ -40,7 +40,7 @@ El documento puede incluir también capturas de pantallas o videos de la ejecuci
 
 ## Diseño
 
-Su solución debe tener un buen diseño concurrente expresado mediante diagramas de flujo de datos y UML.
+Su solución debe tener un buen diseño expresado mediante diagramas de flujo de datos y UML.
 
 Su diseño debe ser concreto y mostrar el flujo de datos de entrada y salida, incluyendo nombres de los métodos más importantes. En el diagrama UML debe quedar claro cuáles fueron todas las clases utilizadas y sus atributos. Los diseños deben guardarse en la carpeta design/ dentro de su proyecto 1.
 
