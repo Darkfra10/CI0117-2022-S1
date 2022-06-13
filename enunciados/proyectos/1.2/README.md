@@ -14,7 +14,7 @@ En el [avance 1](https://github.com/jocan3/CI0117-2022-S1/tree/main/enunciados/p
 
 En esta segunda entrega se creará una solución que haga mejor uso de los recursos de la máquina, al hacer concurrente la aplicación del jugador de Tetris. La aplicación deberá crear tantos **Solucionadores de Tetris** como CPUs hay disponibles en el sistema. Si el equipo de trabajo lo quiere, puede ofrecer un argumento de línea de comandos que controle esta cantidad de solucionadores, pero no es obligatorio.
 
-Dado el estado inicial de Tetris, el programa deberá separar el problema en unidades de trabajo más pequeñas y los solucionadores deberán ir resolviendo cada unidad de trabajo y continuar con otra unidad conforme vayan termimando (mapeo dinámico). EL número de unidades de trabajo estará determinado por la cantidad de columnas del tablero de juego multiplicado por la cantidad de posibles rotaciones de la figura del nivel 0. Por ejemplo, si el tablero tiene 30 columnas y la figura 0  es una L entonces su programa deberá crear 30 x 4 = 120 unidades de trabajo.  
+Dado el estado inicial de Tetris, el programa deberá separar el problema en unidades de trabajo más pequeñas y los solucionadores deberán ir resolviendo cada unidad de trabajo y continuar con otra unidad conforme vayan termimando (mapeo dinámico). El número de unidades de trabajo estará determinado por la cantidad de columnas del tablero de juego multiplicado por la cantidad de posibles rotaciones de la figura del nivel 0. Por ejemplo, si el tablero tiene 30 columnas y la figura 0  es una L entonces su programa deberá crear 30 x 4 = 120 unidades de trabajo.  
 
 El mapeo dinámico será implementado mediante el patrón Productor-Consumidor, el cual se detalla en las siguientes secciones de este enunciado.
 
@@ -28,19 +28,19 @@ El siguiente diagrama muestra un ejemplo de diseño a muy alto nivel de la entre
 
 El diseño debe contemplar cómo se comunican los hilos entre sí.
 
-El hilo principal debe continuar ejecutando la lógica del *File watcher*, extrayendo los valores del estado inicial de Tetris y escribiendo los archivos de salida tal como se hizo en la entrega 1.
+El hilo principal debe continuar ejecutando la lógica del *File watcher*, extrayendo los valores del estado inicial de Tetris.
 
 Cada vez que se obtiene un estado inicial de Tetris, el programa separa dicho estado en unidades de trabajo. Cada unidad de trabajo representa un nuevo estado de Tetris generado luego de colocar la primera figura en una columna y rotación diferente. Por ejemplo, en la siguiente figura se muestra una representación de cuáles serían las 20 unidades de trabajo (estados de Tetris) diferentes generados a partir de un estado inicial en un tablero de 10 columnas y cuya primera figura (nivel 0) es una I.
 
 ![figures](http://jocan3.com/misc_images/tetris_work_units.png)
 
-Un solucionador de Tetris (*Tetris solver*) se mantendrá igual que en la entrega 1, siendo una clase que resuelve de manera serial, utilizando fuerza bruta y búsqueda en profundidad, un estado de Tetris.
+El solucionador de Tetris (*Tetris solver*) se mantendrá igual que en la entrega 1, siendo una clase que resuelve de manera serial, utilizando fuerza bruta y búsqueda en profundidad, un estado de Tetris.
 
 Un hilo *productor* recibe las unidades de trabajo y las coloca en una cola de trabajo.
 
 Varios hilos *consumidores* obtienen unidades de trabajo y las resuelven utilizando un solucionador de Tetris.
 
-El diseño debe reflejar el recorrido de los datos a lo largo de la ejecución. Ustedes deciden la manera en la que manejan y combinan los resultados obtenidos en cada unidad de trabajo.
+El diseño debe reflejar el recorrido de los datos a lo largo de la ejecución. Ustedes deciden la manera en la que manejan y combinan los resultados obtenidos en cada unidad de trabajo. Por ejemplo, una buena solución podría incluir un hilo adicional que se encargue recopilar los resultados de los demás, hacer las comparaciones y mandar a escribir los archivos de salida, de forma que el hilo principal (File watcher) no tenga que esperar a que la solución esté lista para leer otro archivo.
 
 El diseño concurrente consta del flujo de datos, diagramas de clase UML, y pseudocódigo. El pseudocódigo sirve para detallar las acciones que se realizan en la creación, producción, y consumo a lo largo de la cadena de producción.
 
@@ -52,7 +52,13 @@ Su solución debe resolver cada estado inicial de Tetris correctamente. Es decir
 
 Debe implementar algún mecanismo para finalizar el programa sin tener que hacerlo con Ctrl-C o con el comando kill. Haga que el programa termine cuando el *File watcher* lea un archivo con el nombre *tetris_end.txt*. Al recibir un archivo con este nombre, el programa debe terminar la ejecución. En cado de que haya hilos ejecutándose al recibir el archivo de terminación, el programa debe terminarlos correctamente.
 
-Utilice el código */prodcons* y el archivo *Makefile* incluidos en este enunciado para facilitar la implementación de esta entrega.
+Utilice el código */prodcons* y el archivo *Makefile* incluidos en este enunciado para facilitar la implementación de esta entrega. Noten que estas interfaces implementan una clase *Thread* que internamente hace uso de la biblioteca *std::thread* de C++. Por lo tanto, cualquier instancia de las clases *Producer* y *Consumer* puede ser ejecutada como un hilo. 
+
+En el folder */prodcons* también se incluye una implementación de una clase *Queue* que representa una cola, la cual es *thread-safe* al utilizar internamente un mecanismo de control de concurrencia definido en la clase *Semaphore*. Por lo tanto, su equipo de trabajo no debe preocuparse por problemas de concurencia mientras haga los llamados a los métodos públicos de estas interfaces.
+
+Se incluyen además otras interfaces, como el *Assembler* y el *Dispatcher*, que pueden ser utilizadas para mejorar la implementación pero no es requerido utilizarlas. Por ejemplos, los hilos consumidores pueden implementarse como ensambladores (*assemblers*) que leen unidades de trabajo de una cola, resuelven el problema, y colocan los resultados en otra cola, donde finalmente un hilo consumidor se encarga únicamentre de leer resultados, compararlos y escribir resultados.
+
+Es responsabilidad de su equipo de trabajo el analizar y entender dicho código para adarparlo a su solución. Durante las clases también se proveerán ejemplos sobre cómo utilizar las principales interfaces.
 
 ## Pruebas
 
