@@ -4,7 +4,7 @@ Tarea estrictamente individual. Fecha límite de entrega: Lunes 4 de Julio a las
 
 En las tareas anteriores usted escribió programas que determinan la jugada óptima de un estado de juego de Tetris de forma serial (tarea01) y concurrente con Pthreads (tarea02). En esta tarea su objetivo es evaluar una tecnología declarativa: OpenMP. Su programa recibirá las entradas en el mismo formato, y deberá producir los mismos resultados que en las tareas anteriores.
 
-## Aspector generales
+## Aspectos generales
 
 Esta tarea es una secuencia de la [tarea01](https://github.com/jocan3/CI0117-2022-S1/tree/main/enunciados/tareas/01) y de la [tarea02](https://github.com/jocan3/CI0117-2022-S1/tree/main/enunciados/tareas/02) y debe apegarse a las reglas de dichas entregas, a excepción de los cambios solicitados en este enunciado. También se mantienen los lineamientos de las siguientes secciones de la [tarea01](https://github.com/jocan3/CI0117-2022-S1/tree/main/enunciados/tareas/01):
 
@@ -40,7 +40,7 @@ Su programa debe permitir al usuario invocarlo con un número provisto como argu
 
 ## Pruebas
 
-Asegúrese de verificar el funcionamiento de su programa con diferentes casos de prueba. Se recomienda enfáticamente crear varios casos de prueba dentro del folder *test* de su solución. Además se debe probar el buen uso de memoria (asan, msan, ubsan, memcheck) y el un buen uso de la concurrencia (tsan).
+Asegúrese de verificar el funcionamiento de su programa con diferentes casos de prueba. Se recomienda enfáticamente crear varios casos de prueba dentro del folder *test* de su solución. Además se debe probar el buen uso de memoria (asan, msan, ubsan, memcheck) y el un buen uso de la concurrencia (tsan). Dado que valgrind y los sanitizers pueden generar falsos positivos al utilizar OpenMP, agregue una sección al README.md de la tarea indicando los errores encontrados y justificando por qué son falsos positivos.
 
 Recuerde que para generar un ejecutable con un sanitizer hay que (re)compilar todos los fuentes con el sanitizer. Si ya se tiene un ejecutable construido sin sanitizer o un sanitizer diferente, es mejor borrar (make clean) todos los archivos objeto viejos (.o) y recompilar de nuevo.
 
