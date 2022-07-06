@@ -1,6 +1,5 @@
 // Copyright 2022 Jose Mena Arias <jose.menaarias@ucr.ac.cr>
 #include <omp.h>
-
 #include <iostream>
 #include <string>
 #include <iomanip>
